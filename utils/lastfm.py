@@ -12,6 +12,6 @@ def get_recent_track():
 
 def get_lastfm_uri(track: pylast.Track):
     try:
-        return track.get_cover_image(0)
+        return track.get_cover_image(2)
     except:
         return None
