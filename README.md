@@ -22,6 +22,8 @@ LAST_FM_USERNAME="" # Last.fm username
 API_KEY="" # Last.fm API key
 API_SECRET="" # Last.fm secret key
 
+UPDATE_INTERVAL="15"
+
 ```
 ### How to use it?
 
