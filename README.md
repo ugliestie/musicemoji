@@ -1,6 +1,9 @@
 # musicemoji
 Telegram bot which updates your Telegram accout status with emoji of current track
 
+>[!NOTE]
+> Granting permission relies on this simple Github Pages [webapp](https://github.com/ugliestie/emojistatuspermission) which do only this action. It's source code is open like this repo :3 
+
 ### Install
 ```sh
 git clone https://github.com/ugliestie/musicemoji.git
