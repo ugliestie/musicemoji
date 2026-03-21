@@ -1,2 +1,4 @@
 aiogram
 pylast
+Pillow
+apscheduler
