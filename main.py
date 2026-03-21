@@ -10,7 +10,6 @@ from aiogram import BaseMiddleware
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from utils.config import TOKEN
-from handlers import commands
 
 from utils.lastfm import get_recent_track, get_lastfm_uri
 from utils.itunes import get_itunes_uri
@@ -45,7 +44,7 @@ class SchedulerMiddleware(BaseMiddleware):
 async def cmd_start(message: Message):
 	await message.reply("To give ability for this bot to automatically change your Telegram Premium status, please click on webapp button and grant the permission", reply_markup=kb_start())
  
-@router.message(Command(commands=["remind"]))
+@router.message(Command("update"))
 async def hello(message: Message, scheduler: AsyncIOScheduler):
 	await message.reply(
 		text="Automatic update started working!"
