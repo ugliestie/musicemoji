@@ -2,3 +2,4 @@ aiogram
 pylast
 Pillow
 apscheduler
+dotenv

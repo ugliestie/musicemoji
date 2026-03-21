@@ -7,8 +7,6 @@ from utils.config import USER_ID, BOT_USERNAME
 
 async def check_pack(bot: Bot):
 	try:
-		await bot.get_sticker_set(name = f'p_{USER_ID}_by_{BOT_USERNAME}')
-	except:
 		await bot.create_new_sticker_set(
 			user_id=USER_ID,
 			name=f'p_{USER_ID}_by_{BOT_USERNAME}',
@@ -18,6 +16,8 @@ async def check_pack(bot: Bot):
 				format='static',
 				emoji_list=['🎵'])],
 			sticker_type='custom_emoji')
+	except:
+		pass
 
 async def update_pack(bot: Bot, cover: bytes):
 	set = await bot.get_sticker_set(name = f'p_{USER_ID}_by_{BOT_USERNAME}')
