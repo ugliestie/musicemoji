@@ -18,7 +18,7 @@ TOKEN="TOKEN"   # Bot token
 BOT_USERNAME="USERNAME_BOT" # Bot username
 USER_ID="12232111" # User ID
 
-LAST_FM_USER="" # Last.fm username
+LAST_FM_USERNAME="" # Last.fm username
 API_KEY="" # Last.fm API key
 API_SECRET="" # Last.fm secret key
 
