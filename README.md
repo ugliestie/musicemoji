@@ -34,5 +34,5 @@ python main.py
 ```
 
 - After bot loading, firstly grant permission for by pressing button which bot gives you after `/start` command
-- After granting send `/update` command
+- Reboot script
 - Profit! 
