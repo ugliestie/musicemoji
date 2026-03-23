@@ -8,6 +8,8 @@ from aiogram.fsm.state import State, StatesGroup
 import os	
 import dotenv 
 
+from keyboards.start import kb_start
+
 router = Router()
 
 class UserState(StatesGroup):
