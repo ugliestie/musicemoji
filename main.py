@@ -1,23 +1,21 @@
 import asyncio
 import logging
-from aiogram import Bot, Dispatcher, Router
-from aiogram.filters import Command
-from aiogram.types import Message
+from aiogram import Bot, Dispatcher
 from aiogram.enums.parse_mode import ParseMode
 from aiogram.client.default import DefaultBotProperties
 from aiogram.exceptions import TelegramForbiddenError
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from utils.config import TOKEN, UPDATE_INTERVAL
+from utils.config import TOKEN, UPDATE_INTERVAL, NOW_PLAYING
 
-from utils.lastfm import get_recent_track, get_lastfm_uri
+from utils.lastfm import get_recent_track, get_current_track, get_lastfm_uri
 from utils.itunes import get_itunes_uri
 from utils.image import load_and_process
 from utils.pack import check_pack, update_pack
-from utils.status import set_status
+from utils.status import set_status, set_not_playing_status
 
-from keyboards.start import kb_start
+from handlers import commands
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -25,14 +23,8 @@ logger = logging.getLogger(__name__)
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
 
-router = Router()
+last = ''
 
-last = None
-
-@router.message(Command("start"))
-async def cmd_start(message: Message):
-	await message.reply("To give ability for this bot to automatically change your Telegram Premium status, please click on webapp button and grant the permission", reply_markup=kb_start())
- 
 async def _on_startup(scheduler: AsyncIOScheduler):
 	await check_pack(bot)
 	try:
@@ -43,8 +35,13 @@ async def _on_startup(scheduler: AsyncIOScheduler):
 
 async def update():
 	global last, bot
-	track = get_recent_track()
+	if NOW_PLAYING is True:
+		track = get_current_track()
+	else:
+		track = get_recent_track()
 	if last != track:
+		if track is None:
+			await set_not_playing_status(bot)
 		uri = get_lastfm_uri(track)
 		if uri is None:
 			uri = get_itunes_uri(track)
@@ -57,7 +54,7 @@ async def update():
 async def main():
 	scheduler = AsyncIOScheduler(timezone='Europe/Moscow')
 	scheduler.start()
-	dp.include_routers(router)
+	dp.include_routers(commands.router)
 
 	await bot.delete_webhook(drop_pending_updates=True)
 	await dp.start_polling(bot, on_start=await _on_startup(scheduler), handle_signals=False)

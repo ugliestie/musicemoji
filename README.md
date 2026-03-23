@@ -25,7 +25,10 @@ LAST_FM_USERNAME="" # Last.fm username
 API_KEY="" # Last.fm API key
 API_SECRET="" # Last.fm secret key
 
-UPDATE_INTERVAL="15"
+UPDATE_INTERVAL=15 # Time in seconds
+
+NOW_PLAYING=False # Set True to update status only with current track and replace it to set custom emoji when nothing is playing right now
+CUSTOM_EMOJI="" # When empty script sets default Premium badge when nothing playing and NOW_PLAYING set True. To fill, send /custom_emoji to bot
 
 ```
 ### How to use it?

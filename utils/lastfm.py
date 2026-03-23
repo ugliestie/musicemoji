@@ -10,6 +10,9 @@ def get_recent_track():
     recent_track = network.get_user(LAST_FM_USERNAME).get_recent_tracks(limit=1, now_playing=True)
     return recent_track[0].track
 
+def get_current_track():
+    return network.get_user(LAST_FM_USERNAME).get_now_playing()
+
 def get_lastfm_uri(track: pylast.Track):
     try:
         return track.get_cover_image(2)
