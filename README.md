@@ -14,7 +14,7 @@ pip install -r requirements.txt
 ```
 ### Settings
 
->Rename example.env to .env и fill up:
+>Rename example.env to .env and fill up:
 
 ```sh
 TOKEN="TOKEN"   # Bot token
