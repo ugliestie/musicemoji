@@ -1,10 +1,10 @@
 from urllib.request import urlopen
 from urllib.parse import quote
 import json
-import pylast
 from difflib import SequenceMatcher
+from pylast import Track
 
-def get_itunes_uri(track: pylast.Track):
+def get_itunes_uri(track: Track):
     try:
         url = f"https://itunes.apple.com/search?term={quote(str(track))}&media=music&entity=musicTrack&limit=3"
         response = urlopen(url)

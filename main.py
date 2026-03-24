@@ -10,10 +10,12 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from utils.config import TOKEN, UPDATE_INTERVAL, NOW_PLAYING
 
 from utils.lastfm import get_recent_track, get_current_track, get_lastfm_uri
-from utils.itunes import get_itunes_uri
 from utils.image import load_and_process
 from utils.pack import check_pack, update_pack
 from utils.status import set_status, set_not_playing_status
+
+from cover_providers.itunes import get_itunes_uri
+from cover_providers.deezer import get_deezer_uri
 
 from handlers import commands
 
@@ -43,6 +45,8 @@ async def update():
 		if track is None:
 			await set_not_playing_status(bot)
 		uri = get_lastfm_uri(track)
+		if uri is None:
+			uri = get_deezer_uri(track)
 		if uri is None:
 			uri = get_itunes_uri(track)
 		if uri is not None:
