@@ -14,7 +14,7 @@ This script has two modes which can be changed in `NOW_PLAYING` .env variable:
 2) Just change status to last scrobble (for scrobblers which doesn't support 'Scrobbling now')
 
 >[!IMPORTANT]
-> This is better than userbot because you can safely selfhost it everywhere without scares of stealing your Telegram account, it's just simple bot without direct access to account. Be safe! <3
+> This is better than userbot because you can safely selfhost it everywhere without scares of stealing your Telegram account, it's just simple bot without direct access to account. Stay safe! <3
 
 ### Install
 ```sh
