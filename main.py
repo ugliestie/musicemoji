@@ -44,15 +44,16 @@ async def update():
 	if last != track:
 		if track is None:
 			await set_not_playing_status(bot)
-		uri = get_lastfm_uri(track)
-		if uri is None:
-			uri = get_deezer_uri(track)
-		if uri is None:
-			uri = get_itunes_uri(track)
-		if uri is not None:
-			cover = load_and_process(uri)
-			await update_pack(bot, cover)
-			await set_status(bot)
+		else:
+			uri = get_lastfm_uri(track)
+			if uri is None:
+				uri = get_deezer_uri(track)
+			if uri is None:
+				uri = get_itunes_uri(track)
+			if uri is not None:
+				cover = load_and_process(uri)
+				await update_pack(bot, cover)
+				await set_status(bot)
 		last = track
  
 async def main():
