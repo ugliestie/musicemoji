@@ -1,9 +1,6 @@
 # musicemoji
 Telegram bot which updates your Telegram account status with emoji of current track
 
->[!NOTE]
-> Granting permission relies on this simple Github Pages [webapp](https://github.com/ugliestie/emojistatuspermission) which do only that action. It's source code is open like this repo :3 
-
 ### How does this work?
 
 When user scrobble something on Last.fm and this script enabled, user's Telegram Premium emoji status changes to cover of song they are listening to!
@@ -52,6 +49,8 @@ python main.py
 ```
 
 - After bot loading, firstly grant permission for by pressing button which bot gives you after `/start` command
+>[!NOTE]
+> Granting permission relies on this simple Github Pages [webapp](https://github.com/ugliestie/emojistatuspermission) which do only that action. It's source code is open like this repo :3 
 - Reboot script
 - Change custom emoji using `/custom_emoji` command or skip if you satisfied with default star or don't want to use `PLAYING_NOW` mode
 - Profit! 
