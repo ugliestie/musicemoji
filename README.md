@@ -7,7 +7,7 @@ Telegram bot which updates your Telegram account status with emoji of current tr
 ### How does this work?
 
 When user scrobble something on Last.fm and this script enabled, user's Telegram Premium emoji status changes to cover of song they are listening to!
-Sometimes Last.fm doesn't have cover for scrobble, but for this reason this user use free Deezer and iTunes API endpoints to find a cover.
+Sometimes Last.fm doesn't have cover for scrobble, but for this reason this script use free Deezer and iTunes API endpoints as fallback to find a cover.
 
 This script has two modes which can be changed in `NOW_PLAYING` .env variable: 
 1) Show only 'Scrobbling now'-like scrobbles and set custom emoji (`/custom_emoji`) or default star when nothing is playing 
