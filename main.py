@@ -9,10 +9,11 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from utils.config import TOKEN, UPDATE_INTERVAL, NOW_PLAYING
 
-from utils.lastfm import get_recent_track, get_current_track, get_lastfm_uri
+from utils.lastfm import get_recent_track, get_current_track, get_lastfm_cover_uri, get_lastfm_uri
 from utils.image import load_and_process
-from utils.pack import check_pack, update_pack
+from utils.pack import check_pack, update_pack, update_pack_file_id
 from utils.status import set_status, set_not_playing_status
+from cover_providers.custom_cover import db_start, get_cover
 
 from cover_providers.itunes import get_itunes_uri
 from cover_providers.deezer import get_deezer_uri
@@ -28,9 +29,10 @@ dp = Dispatcher()
 last = ''
 
 async def _on_startup(scheduler: AsyncIOScheduler):
+	await db_start()
 	await check_pack(bot)
 	try:
-		await set_status(bot)
+		await update()
 		scheduler.add_job(update, 'interval', seconds=UPDATE_INTERVAL)
 	except TelegramForbiddenError:
 		logger.error("Not enough rights to set status. Please, go to the bot, send /start and submit the permission. After that, restart the script")
@@ -45,15 +47,22 @@ async def update():
 		if track is None:
 			await set_not_playing_status(bot)
 		else:
-			uri = get_lastfm_uri(track)
-			if uri is None:
-				uri = get_deezer_uri(track)
-			if uri is None:
-				uri = get_itunes_uri(track)
-			if uri is not None:
-				cover = load_and_process(uri)
-				await update_pack(bot, cover)
+			file_id = await get_cover(get_lastfm_uri(track))
+			if file_id is not None:
+				await update_pack_file_id(bot, file_id)
 				await set_status(bot)
+			else:
+				uri = get_lastfm_cover_uri(track)
+				if uri is None:
+					uri = get_deezer_uri(track)
+				if uri is None:
+					uri = get_itunes_uri(track)
+				if uri is not None:
+					cover = load_and_process(uri)
+					await update_pack(bot, cover)
+					await set_status(bot)
+				if uri is None and NOW_PLAYING is True:
+					await set_not_playing_status(bot)
 		last = track
  
 async def main():

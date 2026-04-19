@@ -13,8 +13,14 @@ def get_recent_track():
 def get_current_track():
     return network.get_user(LAST_FM_USERNAME).get_now_playing()
 
-def get_lastfm_uri(track: pylast.Track):
+def get_lastfm_cover_uri(track: pylast.Track):
     try:
         return track.get_cover_image(2)
+    except:
+        return None
+    
+def get_lastfm_uri(track: pylast.Track):
+    try:
+        return track.get_url()
     except:
         return None
