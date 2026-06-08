@@ -1,16 +1,17 @@
 import os
-from dotenv import load_dotenv
+import dotenv
 
-load_dotenv()
+dotenv_file = dotenv.find_dotenv()
+dotenv.load_dotenv(dotenv_file, override=True)
 
-TOKEN = os.getenv("TOKEN")
-BOT_USERNAME = os.getenv("BOT_USERNAME")
-USER_ID = int(os.getenv("USER_ID"))
+TOKEN = os.environ.get("TOKEN")
+BOT_USERNAME = os.environ.get("BOT_USERNAME")
+USER_ID = int(os.environ.get("USER_ID"))
 
-LAST_FM_USERNAME = os.getenv("LAST_FM_USERNAME")
-API_KEY = os.getenv("API_KEY")
-API_SECRET = os.getenv("API_SECRET")
+LAST_FM_USERNAME = os.environ.get("LAST_FM_USERNAME")
+API_KEY = os.environ.get("API_KEY")
+API_SECRET = os.environ.get("API_SECRET")
 
-UPDATE_INTERVAL = int(os.getenv("UPDATE_INTERVAL"))
-NOW_PLAYING = bool(os.getenv("NOW_PLAYING"))
-CUSTOM_EMOJI = os.getenv("CUSTOM_EMOJI")
+UPDATE_INTERVAL = int(os.environ.get("UPDATE_INTERVAL"))
+NOW_PLAYING = bool(os.environ.get("NOW_PLAYING"))
+CUSTOM_EMOJI = os.environ.get("CUSTOM_EMOJI")

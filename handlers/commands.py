@@ -10,7 +10,9 @@ import dotenv
 
 from keyboards.start import kb_start
 
-from utils.lastfm import get_recent_track, get_lastfm_uri
+from utils.config import NOW_PLAYING
+from utils.lastfm import get_recent_track, get_current_track, get_lastfm_uri
+from utils.status import set_not_playing_status
 from utils.image import process_buf
 from utils.pack import get_file_id
 from cover_providers.custom_cover import write_cover
@@ -42,12 +44,17 @@ async def process_emoji(message: Message, state: FSMContext):
 		for entity in message.entities:
 			if entity.type == 'custom_emoji':
 				custom_emoji_id = entity.custom_emoji_id
-				os.environ['CUSTOM_EMOJI'] = custom_emoji_id
 				
 				dotenv_file = dotenv.find_dotenv()
 				dotenv.load_dotenv(dotenv_file)
 				
-				dotenv.set_key(dotenv_file, 'CUSTOM_EMOJI', os.environ['CUSTOM_EMOJI'])
+				dotenv.set_key(dotenv_file, 'CUSTOM_EMOJI', custom_emoji_id)
+
+				if NOW_PLAYING:
+					track = get_current_track()
+		
+					if track is None:
+						await set_not_playing_status(message.bot)		
 				break
 
 	if custom_emoji_id:
