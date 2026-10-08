@@ -15,10 +15,11 @@ def get_current_track():
 
 def get_lastfm_cover_uri(track: pylast.Track):
     try:
-        if "2a96cbd8b46e442fc41c2b86b821562f.png" in track.get_cover_image(2):
+        uri = track.get_cover_image(2)
+        if uri == "https://lastfm-img.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png": # пиздец.
             return None
         else:
-            return track.get_cover_image(2)
+            return uri
     except:
         return None
     
