@@ -20,7 +20,7 @@ from cover_providers.deezer import get_deezer_uri
 
 from handlers import commands
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
@@ -54,9 +54,9 @@ async def update():
 			else:
 				uri = get_lastfm_cover_uri(track)
 				if uri is None:
-					uri = get_deezer_uri(track)
-				if uri is None:
 					uri = get_itunes_uri(track)
+				if uri is None:
+					uri = get_deezer_uri(track)
 				if uri is not None:
 					cover = load_and_process(uri)
 					await update_pack(bot, cover)

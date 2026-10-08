@@ -15,7 +15,10 @@ def get_current_track():
 
 def get_lastfm_cover_uri(track: pylast.Track):
     try:
-        return track.get_cover_image(2)
+        if "2a96cbd8b46e442fc41c2b86b821562f.png" in track.get_cover_image(2):
+            return None
+        else:
+            return track.get_cover_image(2)
     except:
         return None
     
