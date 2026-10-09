@@ -4,7 +4,7 @@ import json
 from difflib import SequenceMatcher
 from pylast import Track
 
-def get_deezer_uri(track: Track):
+def get_deezer_uri(track: Track) -> str | None:
     try:
         url = f"https://api.deezer.com/search/track?q={quote(str(track))}&limit=3"
         response = urlopen(url)

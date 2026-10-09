@@ -2,7 +2,7 @@ from PIL import Image
 from urllib.request import urlopen
 import io
 
-def load_and_process(uri):
+def load_and_process(uri) -> bytes:
     cover = Image.open(urlopen(uri))
     if cover.size != (100, 100):
         cover = cover.resize((100, 100))
@@ -11,7 +11,7 @@ def load_and_process(uri):
     cover.save(bufer, format='PNG')
     return bufer.getvalue()
 
-def process_buf(buf):
+def process_buf(buf) -> bytes:
     cover = Image.open(buf)
     if cover.size != (100, 100):
         cover = cover.resize((100, 100))

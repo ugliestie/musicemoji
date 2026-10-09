@@ -26,7 +26,8 @@ logger = logging.getLogger(__name__)
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
 
-last = ''
+last = None
+last_uri = ''
 
 async def _on_startup(scheduler: AsyncIOScheduler):
 	await db_start()
@@ -38,7 +39,7 @@ async def _on_startup(scheduler: AsyncIOScheduler):
 		logger.error("Not enough rights to set status. Please, go to the bot, send /start and submit the permission. After that, restart the script")
 
 async def update():
-	global last, bot
+	global last, last_uri, bot
 	if NOW_PLAYING is True:
 		track = get_current_track()
 	else:
@@ -57,10 +58,11 @@ async def update():
 					uri = get_itunes_uri(track)
 				if uri is None:
 					uri = get_deezer_uri(track)
-				if uri is not None:
+				if last_uri != uri and uri is not None:
 					cover = load_and_process(uri)
 					await update_pack(bot, cover)
 					await set_status(bot)
+					last_uri = uri
 				if uri is None and NOW_PLAYING is True:
 					await set_not_playing_status(bot)
 		last = track

@@ -4,7 +4,7 @@ import json
 from difflib import SequenceMatcher
 from pylast import Track
 
-def get_itunes_uri(track: Track):
+def get_itunes_uri(track: Track) -> str | None:
     try:
         url = f"https://itunes.apple.com/search?term={quote(str(track))}&media=music&entity=musicTrack&limit=3"
         response = urlopen(url)
