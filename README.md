@@ -27,7 +27,6 @@ pip install -r requirements.txt
 
 Rename example.env to .env and fill it up
 
-```
 ### How to use it?
 
 - Firstly, boot the bot
