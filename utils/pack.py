@@ -38,7 +38,7 @@ async def update_pack(bot: Bot, cover: bytes):
 	return set.stickers[0].file_id
 
 async def update_pack_title(bot: Bot, track: Track):
-	title = (f"🎶 {str(track)}"[:62] + '..') if len(f"🎶 {str(track)}") > 75 else f"🎶 {str(track)}"
+	title = (f"🎶 {str(track)}"[:62] + '..') if len(f"🎶 {str(track)}") > 62 else f"🎶 {str(track)}"
 	await bot.set_sticker_set_title(
 			name=f'p_{USER_ID}_by_{BOT_USERNAME}',
 			title=title
