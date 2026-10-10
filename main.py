@@ -7,11 +7,13 @@ from aiogram.exceptions import TelegramForbiddenError
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
+from pylast import Track
+
 from utils.config import TOKEN, UPDATE_INTERVAL, NOW_PLAYING
 
 from utils.lastfm import get_recent_track, get_current_track, get_lastfm_cover_uri, get_lastfm_uri
 from utils.image import load_and_process
-from utils.pack import check_pack, update_pack, update_pack_file_id
+from utils.pack import check_pack, update_pack, update_pack_title, update_pack_file_id
 from utils.status import set_status, set_not_playing_status
 
 from database.models import async_main
@@ -31,7 +33,7 @@ logger = logging.getLogger(__name__)
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
 
-last = None
+last = ''
 last_uri = ''
 
 async def _on_startup(scheduler: AsyncIOScheduler):
@@ -55,6 +57,7 @@ async def update():
 		if track is None:
 			await set_not_playing_status(bot)
 		else:
+			await update_pack_title(bot, track)
 			file_id = await get_cover(get_lastfm_uri(track))
 			try:
 				if file_id is not None:
@@ -69,11 +72,15 @@ async def update():
 				if cover_url is None:
 					cover_url = get_deezer_uri(track)
 				if last_uri != cover_url and cover_url is not None:
-					cover = load_and_process(cover_url)
-					file_id = await update_pack(bot, cover)
-					await set_cover(get_lastfm_uri(track), file_id)
-					await set_status(bot)
-					last_uri = cover_url
+					if last_uri != cover_url:
+						last_uri = cover_url
+						cover = load_and_process(cover_url)
+						file_id = await update_pack(bot, cover)
+						await set_cover(get_lastfm_uri(track), file_id)
+						await set_status(bot)
+					else:
+						file_id = await get_cover(get_lastfm_uri(last))
+						await set_cover(get_lastfm_uri(track), file_id)
 				if cover_url is None and NOW_PLAYING is True:
 					await set_not_playing_status(bot)
 		last = track
