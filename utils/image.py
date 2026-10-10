@@ -1,6 +1,8 @@
-from PIL import Image
-from urllib.request import urlopen
 import io
+from urllib.request import urlopen
+
+from PIL import Image
+
 
 def load_and_process(uri) -> bytes:
     cover = Image.open(urlopen(uri))

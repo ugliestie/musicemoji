@@ -1,6 +1,6 @@
-from database.models import async_session
-from database.models import Cover
-from sqlalchemy import select, update, delete, desc
+from sqlalchemy import select
+
+from database.models import Cover, async_session
 
 
 async def set_cover(track_url, file_id):

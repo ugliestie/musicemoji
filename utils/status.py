@@ -1,6 +1,7 @@
 from aiogram import Bot
 
-from utils.config import USER_ID, BOT_USERNAME, CUSTOM_EMOJI
+from utils.config import BOT_USERNAME, CUSTOM_EMOJI, USER_ID
+
 
 async def set_status(bot: Bot):
     set = await bot.get_sticker_set(name = f'p_{USER_ID}_by_{BOT_USERNAME}')

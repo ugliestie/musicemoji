@@ -1,4 +1,5 @@
 import pylast
+
 from utils.config import API_KEY, API_SECRET, LAST_FM_USERNAME
 
 network = pylast.LastFMNetwork(

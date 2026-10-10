@@ -1,11 +1,9 @@
 from aiogram import Bot
-from aiogram.types import Message
-from aiogram.types import InputSticker
-from aiogram.types import FSInputFile, BufferedInputFile
-
+from aiogram.types import BufferedInputFile, FSInputFile, InputSticker
 from pylast import Track
 
-from utils.config import USER_ID, BOT_USERNAME
+from utils.config import BOT_USERNAME, USER_ID
+
 
 async def check_pack(bot: Bot):
 	try:
@@ -38,7 +36,7 @@ async def update_pack(bot: Bot, cover: bytes):
 	return set.stickers[0].file_id
 
 async def update_pack_title(bot: Bot, track: Track):
-	title = (f"🎶 {str(track)}"[:62] + '..') if len(f"🎶 {str(track)}") > 62 else f"🎶 {str(track)}"
+	title = (f"🎶 {track!s}"[:62] + '..') if len(f"🎶 {track!s}") > 62 else f"🎶 {track!s}"
 	await bot.set_sticker_set_title(
 			name=f'p_{USER_ID}_by_{BOT_USERNAME}',
 			title=title

@@ -1,31 +1,29 @@
 import asyncio
 import logging
-from aiogram import Bot, Dispatcher
-from aiogram.enums.parse_mode import ParseMode
-from aiogram.client.default import DefaultBotProperties
-from aiogram.exceptions import TelegramForbiddenError
 
+from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums.parse_mode import ParseMode
+from aiogram.exceptions import TelegramForbiddenError
+from alembic.config import Config
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from pylast import Track
-
-from utils.config import TOKEN, UPDATE_INTERVAL, NOW_PLAYING
-
-from utils.lastfm import get_recent_track, get_current_track, get_lastfm_cover_uri, get_lastfm_uri
-from utils.image import load_and_process
-from utils.pack import check_pack, update_pack, update_pack_title, update_pack_file_id
-from utils.status import set_status, set_not_playing_status
-
-from database.models import async_main
-from database.requests import set_cover, get_cover
-
-from alembic.config import Config
 from alembic import command
-
-from cover_providers.itunes import get_itunes_uri
 from cover_providers.deezer import get_deezer_uri
-
+from cover_providers.itunes import get_itunes_uri
+from database.models import async_main
+from database.requests import get_cover, set_cover
 from handlers import commands
+from utils.config import NOW_PLAYING, TOKEN, UPDATE_INTERVAL
+from utils.image import load_and_process
+from utils.lastfm import (
+	get_current_track,
+	get_lastfm_cover_uri,
+	get_lastfm_uri,
+	get_recent_track,
+)
+from utils.pack import check_pack, update_pack, update_pack_file_id, update_pack_title
+from utils.status import set_not_playing_status, set_status
 
 logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)

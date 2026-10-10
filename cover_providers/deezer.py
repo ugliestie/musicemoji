@@ -1,8 +1,10 @@
-from urllib.request import urlopen
-from urllib.parse import quote
 import json
 from difflib import SequenceMatcher
+from urllib.parse import quote
+from urllib.request import urlopen
+
 from pylast import Track
+
 
 def get_deezer_uri(track: Track) -> str | None:
     try:

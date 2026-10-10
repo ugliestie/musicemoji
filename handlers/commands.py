@@ -1,21 +1,18 @@
+
+import dotenv
 from aiogram import Router
 from aiogram.filters import Command
-from aiogram.types import Message
-
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
+from aiogram.types import Message
 
-import os	
-import dotenv 
-
-from keyboards.start import kb_start
-
-from utils.config import NOW_PLAYING
-from utils.lastfm import get_recent_track, get_current_track, get_lastfm_uri
-from utils.status import set_not_playing_status
-from utils.image import process_buf
-from utils.pack import update_pack
 from database.requests import set_cover
+from keyboards.start import kb_start
+from utils.config import NOW_PLAYING
+from utils.image import process_buf
+from utils.lastfm import get_current_track, get_lastfm_uri, get_recent_track
+from utils.pack import update_pack
+from utils.status import set_not_playing_status
 
 router = Router()
 
@@ -58,7 +55,7 @@ async def process_no_playing_emoji(message: Message, state: FSMContext):
 				break
 
 	if custom_emoji_id:
-		await message.answer(f"Custom emoji set successfully!")
+		await message.answer("Custom emoji set successfully!")
 		await state.clear()
 		
 @router.message(Command("custom_cover"))
@@ -77,5 +74,5 @@ async def process_custom_cover(message: Message, state: FSMContext):
 		cover = process_buf(input_file)
 		file_id = await update_pack(message.bot, cover)
 		await set_cover(data['track'], file_id)
-		await message.answer(f"Custom cover set successfully!")
+		await message.answer("Custom cover set successfully!")
 		await state.clear()
