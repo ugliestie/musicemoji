@@ -13,7 +13,12 @@ from utils.lastfm import get_recent_track, get_current_track, get_lastfm_cover_u
 from utils.image import load_and_process
 from utils.pack import check_pack, update_pack, update_pack_file_id
 from utils.status import set_status, set_not_playing_status
-from cover_providers.custom_cover import db_start, get_cover
+
+from database.models import async_main
+from database.requests import set_cover, get_cover
+
+from alembic.config import Config
+from alembic import command
 
 from cover_providers.itunes import get_itunes_uri
 from cover_providers.deezer import get_deezer_uri
@@ -30,7 +35,9 @@ last = None
 last_uri = ''
 
 async def _on_startup(scheduler: AsyncIOScheduler):
-	await db_start()
+	await async_main()
+	alembic_cfg = Config("alembic.ini")
+	await asyncio.to_thread(command.upgrade, alembic_cfg, "head")
 	await check_pack(bot)
 	try:
 		await update()
@@ -49,21 +56,25 @@ async def update():
 			await set_not_playing_status(bot)
 		else:
 			file_id = await get_cover(get_lastfm_uri(track))
-			if file_id is not None:
-				await update_pack_file_id(bot, file_id)
-				await set_status(bot)
-			else:
-				uri = get_lastfm_cover_uri(track)
-				if uri is None:
-					uri = get_itunes_uri(track)
-				if uri is None:
-					uri = get_deezer_uri(track)
-				if last_uri != uri and uri is not None:
-					cover = load_and_process(uri)
-					await update_pack(bot, cover)
+			try:
+				if file_id is not None:
+					await update_pack_file_id(bot, file_id)
 					await set_status(bot)
-					last_uri = uri
-				if uri is None and NOW_PLAYING is True:
+				else:
+					raise Exception
+			except:
+				cover_url = get_lastfm_cover_uri(track)
+				if cover_url is None:
+					cover_url = get_itunes_uri(track)
+				if cover_url is None:
+					cover_url = get_deezer_uri(track)
+				if last_uri != cover_url and cover_url is not None:
+					cover = load_and_process(cover_url)
+					file_id = await update_pack(bot, cover)
+					await set_cover(get_lastfm_uri(track), file_id)
+					await set_status(bot)
+					last_uri = cover_url
+				if cover_url is None and NOW_PLAYING is True:
 					await set_not_playing_status(bot)
 		last = track
  

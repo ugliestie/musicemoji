@@ -14,8 +14,8 @@ from utils.config import NOW_PLAYING
 from utils.lastfm import get_recent_track, get_current_track, get_lastfm_uri
 from utils.status import set_not_playing_status
 from utils.image import process_buf
-from utils.pack import get_file_id
-from cover_providers.custom_cover import write_cover
+from utils.pack import update_pack
+from database.requests import set_cover
 
 router = Router()
 
@@ -33,7 +33,7 @@ async def cmd_custom_emoji(message: Message, state: FSMContext):
 	await state.set_state(UserState.waiting_for_emoji)
 
 @router.message(UserState.waiting_for_emoji)
-async def process_emoji(message: Message, state: FSMContext):
+async def process_no_playing_emoji(message: Message, state: FSMContext):
 	if message.text and message.text.startswith('/'):
 		await message.answer("Invalid input. Please send a custom emoji.")
 		return
@@ -69,13 +69,13 @@ async def cmd_custom_cover(message: Message, state: FSMContext):
 	await state.set_state(UserState.waiting_for_cover)
 
 @router.message(UserState.waiting_for_cover)
-async def process_emoji(message: Message, state: FSMContext):
+async def process_custom_cover(message: Message, state: FSMContext):
 	data = await state.get_data()
 	
 	if message.photo:
 		input_file = await message.bot.download(message.photo[-1])
 		cover = process_buf(input_file)
-		file_id = await get_file_id(message, cover)
-		await write_cover(data['track'], file_id)
+		file_id = await update_pack(message.bot, cover)
+		await set_cover(data['track'], file_id)
 		await message.answer(f"Custom cover set successfully!")
 		await state.clear()

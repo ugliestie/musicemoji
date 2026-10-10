@@ -15,3 +15,5 @@ API_SECRET = os.environ.get("API_SECRET")
 UPDATE_INTERVAL = int(os.environ.get("UPDATE_INTERVAL"))
 NOW_PLAYING = bool(os.environ.get("NOW_PLAYING"))
 CUSTOM_EMOJI = os.environ.get("CUSTOM_EMOJI")
+
+DB_URL = os.environ.get("DB_URL")

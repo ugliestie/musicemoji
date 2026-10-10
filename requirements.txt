@@ -1,5 +1,8 @@
 aiogram
+aiosqlite
 pylast
 Pillow
 apscheduler
+sqlalchemy[asyncio]
 dotenv
+alembic
